@@ -1,0 +1,12 @@
+streamlit
+requests
+beautifulsoup4
+pandas
+fitz
+pymupdf
+pdfplumber
+tabula-py
+openpyxl
+boto3
+adobe-pdfservices-sdk
+python-dotenv
