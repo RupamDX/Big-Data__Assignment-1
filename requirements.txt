@@ -1,6 +1,4 @@
---upgrade pip
---upgrade setuptools
---upgrade wheel
+
 streamlit
 requests
 beautifulsoup4
