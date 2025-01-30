@@ -1,4 +1,13 @@
 streamlit
-adobe-pdfservices-sdk
+pymupdf
+pdfplumber
+tabula-py
+requests
+beautifulsoup4
+pandas
+openpyxl
+boto3
+pdfservices-sdk
+
 
 
