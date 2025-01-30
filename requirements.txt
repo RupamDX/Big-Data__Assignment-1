@@ -1,11 +1,4 @@
 streamlit
-pymupdf==1.22.3
-pdfplumber
-tabula-py
-requests
-beautifulsoup4
-pandas
-openpyxl
-boto3
 adobe-pdfservices-sdk
+
 
