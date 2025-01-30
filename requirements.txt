@@ -1,5 +1,5 @@
 streamlit
-pymupdf
+pymupdf==1.22.3
 pdfplumber
 tabula-py
 requests
