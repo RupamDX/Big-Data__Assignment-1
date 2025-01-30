@@ -9,5 +9,5 @@ openpyxl
 boto3
 pdfservices-sdk
 jpype1
-
+tabulate
 
