@@ -207,7 +207,7 @@ def adobe_zip_to_markdown(zip_file_path):
     # Parse text/tables
     for element in data.get("elements", []):
         if "Text" in element:
-            md_content += f"## Text Element\n{element['Text']}\n\n"
+            md_content += f"##\n{element['Text']}\n\n"
         if "Table" in element:
             md_content += "## Table Element\n"
             rows = element["Table"].get("Rows", [])
