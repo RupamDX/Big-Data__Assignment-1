@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+streamlit
+pymupdf
+pdfplumber
+tabula-py
+requests
+beautifulsoup4
+pandas
+openpyxl
+boto3
+pdfservices-sdk
+jpype1
+tabulate
+apify-client
+python-multipart
