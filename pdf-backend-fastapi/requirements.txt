@@ -9,3 +9,4 @@ openpyxl
 beautifulsoup4
 apify-client
 adobe.pdfservices
+python-multipart

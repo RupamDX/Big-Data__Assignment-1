@@ -13,3 +13,4 @@ pdfservices-sdk
 jpype1
 tabulate
 apify-client
+python-multipart
