@@ -133,16 +133,13 @@ def open_source_extract_pdf(pdf_path):
 logging.basicConfig(level=logging.INFO)
 
 def extract_pdf_elements(pdf_path):
-    #Extracts text, tables, and image renditions using Adobe PDF Services.
     try:
-        # Load Adobe credentials
-        with open(ADOBE_CREDENTIALS_PATH, "r") as f:
-            adobe_data = json.load(f)
+        # Load Adobe credentials from environment variable or secrets
+        adobe_credentials = json.loads(os.getenv("ADOBE_CREDENTIALS_JSON"))
+        client_id = adobe_credentials["client_credentials"]["client_id"]
+        client_secret = adobe_credentials["client_credentials"]["client_secret"]
 
-        credentials = ServicePrincipalCredentials(
-            client_id=adobe_data["client_credentials"]["client_id"],
-            client_secret=adobe_data["client_credentials"]["client_secret"]
-        )
+        credentials = ServicePrincipalCredentials(client_id=client_id, client_secret=client_secret)
         pdf_services = PDFServices(credentials=credentials)
 
         # Upload PDF to Adobe API
@@ -164,7 +161,7 @@ def extract_pdf_elements(pdf_path):
         stream_asset = pdf_services.get_content(result_asset)
 
         with tempfile.NamedTemporaryFile(delete=False, suffix=".zip") as temp_zip:
-            temp_zip.write(stream_asset.get_input_stream())  #  FIXED: No `.read()` needed
+            temp_zip.write(stream_asset.get_input_stream())
             temp_zip_path = temp_zip.name
 
         # Extract ZIP contents
@@ -184,6 +181,7 @@ def extract_pdf_elements(pdf_path):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Adobe PDF Services error: {str(e)}")
+
 
 
 import logging
