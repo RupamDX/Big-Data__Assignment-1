@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+boto3
+pdfplumber
+requests
+pymupdf
+pandas
+openpyxl
+beautifulsoup4
+apify-client
+adobe.pdfservices
