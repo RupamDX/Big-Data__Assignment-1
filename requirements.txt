@@ -1,3 +1,5 @@
+fastapi
+uvicorn
 streamlit
 pymupdf
 pdfplumber
@@ -10,4 +12,4 @@ boto3
 pdfservices-sdk
 jpype1
 tabulate
-
+apify-client
