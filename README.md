@@ -41,4 +41,8 @@ Supports **open-source tools** and **enterprise solutions (Adobe PDF Services, A
 - [Streamlit Cloud](https://streamlit.io/cloud) for hosting the **frontend**
 
 ---
+## **Directory Structure**
+![image](https://github.com/user-attachments/assets/9f2ed582-a88a-44b0-99b8-2ea29d59bdc8)
+
+
 
