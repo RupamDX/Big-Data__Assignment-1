@@ -6,7 +6,7 @@ import urllib.parse
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# For PDF: open-source
+# For PDF: open-source Updated
 import fitz  # PyMuPDF
 import pdfplumber
 from tabula import read_pdf
