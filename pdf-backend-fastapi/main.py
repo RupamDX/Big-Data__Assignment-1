@@ -483,9 +483,9 @@ def wait_for_apify_run(run_id, poll_interval=5):
 
 
 
-
+"""
 def enterprise_extract_website(url):
-    """Extracts content from a website using Apify and uploads it as Markdown to S3."""
+    #Extracts content from a website using Apify and uploads it as Markdown to S3.
     try:
         logging.info(f"Starting website extraction for: {url}")
 
@@ -580,6 +580,102 @@ def enterprise_extract_website(url):
     except Exception as e:
         logging.exception(f"Error extracting website content: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error extracting website content: {str(e)}")
+"""
+def enterprise_extract_website(url):
+    """Extracts content from a website using the Apify Actor (`aYG0l9s7dbB7j3gbS`) and uploads it as Markdown to S3."""
+    try:
+        logging.info(f"Starting website extraction for: {url}")
+
+        # Prepare the input for the Apify Actor
+        run_input = {
+            "startUrls": [{"url": url}],
+            "useSitemaps": True,
+            "crawlerType": "playwright:adaptive",
+            "maxCrawlDepth": 5,  # Adjusted for efficiency
+            "maxCrawlPages": 500,
+            "proxyConfiguration": {"useApifyProxy": True},
+            "dynamicContentWaitSecs": 5,
+            "removeCookieWarnings": True,
+            "expandIframes": True,
+            "saveMarkdown": True,  # Ensures Markdown format extraction
+            "maxResults": 1000
+        }
+
+        # Start the Apify Actor (`aYG0l9s7dbB7j3gbS`)
+        run = client.actor("aYG0l9s7dbB7j3gbS").call(run_input=run_input)
+        run_id = run["id"]
+        logging.info(f"Apify Actor started with Run ID: {run_id}")
+
+        # Wait for the Apify Actor to complete
+        timeout = 600  # Maximum wait time in seconds
+        start_time = time.time()
+
+        while True:
+            # Check Apify run status
+            run_status = client.run(run_id).get()["status"]
+            logging.info(f"Apify run status: {run_status}")
+
+            if run_status == "SUCCEEDED":
+                logging.info("Apify run completed successfully!")
+                break
+            elif run_status in ["FAILED", "ABORTED"]:
+                run_info = client.run(run_id).get()
+                error_message = run_info.get("errorMessage", "No detailed error message provided.")
+                logging.error(f"Apify run failed! Error: {error_message}")
+                raise HTTPException(status_code=500, detail=f"Apify run failed: {error_message}")
+
+            if time.time() - start_time > timeout:
+                raise HTTPException(status_code=500, detail="Apify run timed out!")
+
+            time.sleep(5)  # Poll every 5 seconds
+
+        # Retrieve extracted dataset
+        dataset_id = client.run(run_id).get()["defaultDatasetId"]
+        dataset_items = list(client.dataset(dataset_id).iterate_items())
+
+        if not dataset_items:
+            logging.error("Apify returned an empty dataset!")
+            raise HTTPException(status_code=500, detail="Extracted dataset is empty!")
+
+        # Prepare Markdown content
+        md_content = f"# Extracted Content from {url}\n\n"
+
+        for item in dataset_items:
+            title = item.get("title", "No Title")
+            page_url = item.get("url", "#")
+            markdown_text = item.get("markdown") or item.get("textContent") or "No Content Available"
+
+            md_content += f"## {title}\n"
+            md_content += f"[Source Link]({page_url})\n\n"
+            md_content += f"{markdown_text}\n\n---\n\n"
+
+        if not md_content.strip():
+            logging.error("Extracted Markdown is empty!")
+            raise HTTPException(status_code=500, detail="Extracted Markdown is empty!")
+
+        # Save Markdown to a temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".md", mode="w", encoding="utf-8") as md_file:
+            md_file.write(md_content)
+            md_file_path = md_file.name
+
+        # Upload Markdown to S3
+        logging.info(f"Uploading extracted Markdown to S3: {md_file_path}")
+        md_s3_url = upload_file_to_s3(md_file_path)
+
+        if not md_s3_url:
+            logging.error("Markdown upload to S3 failed!")
+            raise HTTPException(status_code=500, detail="Markdown upload failed!")
+
+        os.remove(md_file_path)  # Cleanup local file
+        logging.info(f"Successfully uploaded Markdown to S3: {md_s3_url}")
+
+        return md_s3_url
+
+    except Exception as e:
+        logging.exception(f"Error extracting website content: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error extracting website content: {str(e)}")
+
+
 
 ################################################################################
 #                          API ENDPOINTS                                       #
