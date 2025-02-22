@@ -5,6 +5,7 @@ Supports **open-source tools** and **enterprise solutions (Adobe PDF Services, A
 
 #Application LINK:https://big-dataassignment-1-83zuesfvjkejbwqk7sjtbn.streamlit.app/
 
+#Document: https://docs.google.com/document/d/1YqnOCiZhLv2NM_AiD8H3q4jpXuiK4uT59iqrGktEaLY/edit?tab=t.8h04vzuqhebk
 ---
 
 ## 🚀 Features
