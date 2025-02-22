@@ -48,4 +48,5 @@ Supports **open-source tools** and **enterprise solutions (Adobe PDF Services, A
 ![image](https://github.com/user-attachments/assets/9f2ed582-a88a-44b0-99b8-2ea29d59bdc8)
 
 
-
+##Architecture Diagram
+![WhatsApp Image 2025-02-21 at 9 46 42 PM](https://github.com/user-attachments/assets/898beb81-8817-4f5f-a454-4d23d7aa81cd)
